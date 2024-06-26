@@ -1,0 +1,145 @@
+<script>
+import HelloWorld from './components/HelloWorld.vue'
+export default {  
+  components: {
+    HelloWorld
+  },
+  data() {
+    return {
+      num: 0,
+      uname: "张三",
+      htmltag: "<h2>标题</h2>",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNkbwU1t1XV0BJgu4EHIVClOVUx0H9Xh6LvQ&s",
+      attributeName: "id",
+      attributeValue: "d1",
+      eventName: "click",
+      message: "Hello SB"
+    }
+  },
+  computed: {
+    // reversedmessage: function () {
+    //   console.log("computed");
+    //   return this.message.split(' ').reverse().join(' ');
+    // }
+    reversedmessage:{
+      get: function () {
+        console.log("computed");
+        return this.message.split(' ').reverse().join(' ');
+      },
+      set: function (newVal) {
+        console.log(newVal);
+        this.message = newVal;
+      }
+    },
+  },
+  watch:{
+    // 每当message发生变化时，就会执行该函数
+    // message:function(newValue,oldValue){
+    //   console.log(newValue);
+    //   console.log(oldValue);
+    //   if(newValue > 5 || newValue < 10){
+    //     this.message = newValue;
+    //   } else {
+    //     console.log(newValue +"长度过长或过短");
+    //   }
+    // watch深度监听
+    message:{
+      immediate:true,
+      handler:function(newValue){        
+        if(newValue.length > 5 && newValue.length < 10){
+          console.log(newValue);
+          this.message = newValue;
+        }
+      }
+     }    
+  },
+  methods: {
+    chantgeUname: function () {
+      this.uname = "李四"
+    },
+    changePicture: function () {
+      this.url = "https://pic.616pic.com/ys_img/00/03/69/xZYB7unkyE.jpg"
+    },
+    reversemessage:function () {
+      console.log("methods");
+      return this.message.split(' ').reverse().join(' ');
+    },
+    ChangeMessage: function(){
+      this.message = "Hello Rust";
+    }
+  },  
+}
+</script>
+
+<template>
+  <div id = "app">
+    <!-- Mustache语法 ：即双括号-->
+    <p>{{ num }}</p>
+    <p>{{ uname }}</p>
+    <!-- v-once变量只绑定一次，下次改变不会跟着变 -->
+    <p v-once>{{ uname }}</p>
+    <!-- v-html:将属性变量的元素替换成当前元素 -->
+    <p v-html="htmltag"></p>
+    <!-- @click 等同于 v-on:click -->
+    <button v-on:click="chantgeUname">改变名字</button>
+    <!-- v-bind可以用于绑定属性值 -->
+    <img v-bind:src="url" alt="">
+    <button @click="changePicture">改变图片</button>
+    <!-- 动态属性及动态属性值 -->
+    <p :[attributeName]="attributeValue">动态属性</p>
+    <!-- 动态事件属性及属性值 -->
+    <button @[eventName]="attributeName = 'class'">改变属性</button>
+    <button @click="eventName = 'mouseover'">改变属性</button>
+    <!-- 翻转字符串  -->
+    <p>翻转前：{{ message }}</p>
+    <!-- computed -->
+    <p>翻转后：{{ reversedmessage }}</p>
+    <p>翻转后：{{ reversedmessage }}</p>
+    <p>翻转后：{{ reversedmessage }}</p>
+    <!-- methods -->
+    <p>翻转后：{{ reversemessage() }}</p>
+    <p>翻转后：{{ reversemessage() }}</p>
+    <p>翻转后：{{ reversemessage() }}</p>
+    <button @click="ChangeMessage">Change Message</button>
+    <!-- 用于处理完整的计算属性的seter值修改 -->
+    <button @click="reversedmessage = 'Hello Rust'">Change Message</button>
+    <input type="text" v-model="message" />
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <!-- <HelloWorld msg="Vite + Vue" /> -->
+</template>
+
+<style scoped>
+#d1 {
+  color: red;
+}
+
+.d1 {
+  color: blue
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
+}
+</style>

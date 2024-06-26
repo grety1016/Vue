@@ -11,6 +11,10 @@
         <p>{{name}}</p>
         <p>{{age}}</p>
         <p>{{sex}}</p>
+        
+        <div v-for="item in hobby" :key="item.id">
+            {{ item }}
+        </div>
     </div>
 
 </body>
@@ -22,11 +26,14 @@
     const Counter = {
         data:function() {
             return {
-                name: "张三",
+                name: "王五",
                 age: 20,
-                sex: "女"
+                sex: "男",
+                hobby: ["吃饭","睡觉","打豆豆"]
+                
             }
         }
     }
-    Vue.createApp(Counter).mount("#counter");
+    let app = Vue.createApp(Counter).mount("#counter");
+    console.log(app);
 </script>

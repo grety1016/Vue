@@ -6,15 +6,24 @@ export default {
   },
   data() {
     return {
-      num: 0,
-      uname: "张三",
-      htmltag: "<h2>标题</h2>",
-      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNkbwU1t1XV0BJgu4EHIVClOVUx0H9Xh6LvQ&s",
-      attributeName: "id",
-      attributeValue: "d1",
-      eventName: "click",
-      message: "Hello SB"
-    }
+        num: 0,
+        uname: "张三",
+        htmltag: "<h2>标题</h2>",
+        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNkbwU1t1XV0BJgu4EHIVClOVUx0H9Xh6LvQ&s",
+        attributeName: "id",
+        attributeValue: "d1",
+        eventName: "click",
+        message: "Hello SB",
+        user:{
+          name: "张三",
+          age:18,
+          sex: "男" 
+          },
+        isActive:true,
+        error: null, 
+
+      }
+
   },
   computed: {
     // reversedmessage: function () {
@@ -31,6 +40,12 @@ export default {
         this.message = newVal;
       }
     },
+    classObject: function(){
+      immediate:true;
+      return {
+        active: this.isActive && !this.error,        
+      }
+    }
   },
   watch:{
     // 每当message发生变化时，就会执行该函数
@@ -46,12 +61,26 @@ export default {
     message:{
       immediate:true,
       handler:function(newValue){        
-        if(newValue.length > 5 && newValue.length < 10){
+        if(newValue.length > 5 && newValue.length < 11){
           console.log(newValue);
           this.message = newValue;
         }
       }
-     }    
+     },
+    // 深度监听对象
+    //  user:{
+    //   handler:function(newVal){
+    //     console.log(newVal.name);
+    //   },
+    //   deep:true, 
+    //  }       
+    // 深度监听对象的属性
+     "user.name":{  //"user.name"
+      handler:function(newVal){
+        console.log(newVal);
+      },
+      deep:true, 
+     }, 
   },
   methods: {
     chantgeUname: function () {
@@ -104,6 +133,14 @@ export default {
     <!-- 用于处理完整的计算属性的seter值修改 -->
     <button @click="reversedmessage = 'Hello Rust'">Change Message</button>
     <input type="text" v-model="message" />
+    <!-- 深度监听user.name -->
+    <button @click="user.name='王五'">改变名字</button>
+    <!-- 直接在标签中使用字符属性 -->
+    <p class="active">Hello</p>
+    <!-- 使用对象属性  -->
+    <p :class="classObject"  class="HelloWorld">Hello from object</p>
+    <!-- //类属性是可以叠加配置的，会合并两个class类 -->
+    <button @click="isActive = !isActive">改变isActive属性值</button> 
 
 
 
@@ -120,6 +157,13 @@ export default {
 </template>
 
 <style scoped>
+.active{
+  font-size: 20px;
+  color: blue;  
+}
+.HelloWorld{
+  background-color: aqua;
+}
 #d1 {
   color: red;
 }

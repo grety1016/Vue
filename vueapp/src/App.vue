@@ -1,53 +1,59 @@
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-export default {  
+import HelloWorld from "./components/HelloWorld.vue";
+export default {
   components: {
-    HelloWorld
+    HelloWorld,
   },
   data() {
     return {
-        num: 0,
-        uname: "张三",
-        htmltag: "<h2>标题</h2>",
-        url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNkbwU1t1XV0BJgu4EHIVClOVUx0H9Xh6LvQ&s",
-        attributeName: "id",
-        attributeValue: "d1",
-        eventName: "click",
-        message: "Hello SB",
-        user:{
-          name: "张三",
-          age:18,
-          sex: "男" 
-          },
-        isActive:true,
-        error: null, 
-
-      }
-
+      num: 0,
+      uname: "张三",
+      htmltag: "<h2>标题</h2>",
+      url:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNkbwU1t1XV0BJgu4EHIVClOVUx0H9Xh6LvQ&s",
+      attributeName: "id",
+      attributeValue: "d1",
+      eventName: "click",
+      message: "Hello SB",
+      user: {
+        name: "张三",
+        age: 18,
+        sex: "男",
+      },
+      isActive: true,
+      error: null,
+      activeArray: ["active", "HelloWorld"],
+      activeColor: "red",
+      font_size: "30px",
+      Ok: true,
+      id: 1,
+      list: 1,
+      v_if: true,
+    };
   },
   computed: {
     // reversedmessage: function () {
     //   console.log("computed");
     //   return this.message.split(' ').reverse().join(' ');
     // }
-    reversedmessage:{
+    reversedmessage: {
       get: function () {
         console.log("computed");
-        return this.message.split(' ').reverse().join(' ');
+        return this.message.split(" ").reverse().join(" ");
       },
       set: function (newVal) {
         console.log(newVal);
         this.message = newVal;
-      }
+      },
     },
-    classObject: function(){
-      immediate:true;
+    classObject: function () {
+      immediate: true;
       return {
-        active: this.isActive && !this.error,        
-      }
-    }
+        active: this.isActive && !this.error,
+      };
+    },
   },
-  watch:{
+  watch: {
     // 每当message发生变化时，就会执行该函数
     // message:function(newValue,oldValue){
     //   console.log(newValue);
@@ -58,50 +64,51 @@ export default {
     //     console.log(newValue +"长度过长或过短");
     //   }
     // watch深度监听
-    message:{
-      immediate:true,
-      handler:function(newValue){        
-        if(newValue.length > 5 && newValue.length < 11){
+    message: {
+      immediate: true,
+      handler: function (newValue) {
+        if (newValue.length > 5 && newValue.length < 11) {
           console.log(newValue);
           this.message = newValue;
         }
-      }
-     },
+      },
+    },
     // 深度监听对象
     //  user:{
     //   handler:function(newVal){
     //     console.log(newVal.name);
     //   },
-    //   deep:true, 
-    //  }       
+    //   deep:true,
+    //  }
     // 深度监听对象的属性
-     "user.name":{  //"user.name"
-      handler:function(newVal){
+    "user.name": {
+      //"user.name"
+      handler: function (newVal) {
         console.log(newVal);
       },
-      deep:true, 
-     }, 
+      deep: true,
+    },
   },
   methods: {
     chantgeUname: function () {
-      this.uname = "李四"
+      this.uname = "李四";
     },
     changePicture: function () {
-      this.url = "https://pic.616pic.com/ys_img/00/03/69/xZYB7unkyE.jpg"
+      this.url = "https://pic.616pic.com/ys_img/00/03/69/xZYB7unkyE.jpg";
     },
-    reversemessage:function () {
+    reversemessage: function () {
       console.log("methods");
-      return this.message.split(' ').reverse().join(' ');
+      return this.message.split(" ").reverse().join(" ");
     },
-    ChangeMessage: function(){
+    ChangeMessage: function () {
       this.message = "Hello Rust";
-    }
-  },  
-}
+    },
+  },
+};
 </script>
 
 <template>
-  <div id = "app">
+  <div id="app">
     <!-- Mustache语法 ：即双括号-->
     <p>{{ num }}</p>
     <p>{{ uname }}</p>
@@ -109,10 +116,15 @@ export default {
     <p v-once>{{ uname }}</p>
     <!-- v-html:将属性变量的元素替换成当前元素 -->
     <p v-html="htmltag"></p>
+    <!-- 表达式用法 -->
+    <p>{{ num + 10 }}</p>
+    <p>{{ Ok ? "yes" : "no" }}</p>
+    <div :id="`list-${id}`">hello world</div>
+    <div :class="`list${list}`">hello world</div>
     <!-- @click 等同于 v-on:click -->
     <button v-on:click="chantgeUname">改变名字</button>
     <!-- v-bind可以用于绑定属性值 -->
-    <img v-bind:src="url" alt="">
+    <img v-bind:src="url" alt="" />
     <button @click="changePicture">改变图片</button>
     <!-- 动态属性及动态属性值 -->
     <p :[attributeName]="attributeValue">动态属性</p>
@@ -134,42 +146,62 @@ export default {
     <button @click="reversedmessage = 'Hello Rust'">Change Message</button>
     <input type="text" v-model="message" />
     <!-- 深度监听user.name -->
-    <button @click="user.name='王五'">改变名字</button>
+    <button @click="user.name = '王五'">改变名字</button>
+
+    <!-- class样式 -->
     <!-- 直接在标签中使用字符属性 -->
     <p class="active">Hello</p>
     <!-- 使用对象属性  -->
-    <p :class="classObject"  class="HelloWorld">Hello from object</p>
+    <p :class="classObject" class="HelloWorld">Hello from object</p>
     <!-- //类属性是可以叠加配置的，会合并两个class类 -->
-    <button @click="isActive = !isActive">改变isActive属性值</button> 
+    <button @click="isActive = !isActive">改变isActive属性值</button>
+    <p :class="activeArray">样式来源于数组</p>
 
+    <!-- style内联样式 -->
+    <p :style="{ color: activeColor, fontSize: font_size }">内联样式</p>
 
+    <p class="testClass" id="testid">测试元素+类名</p>
+    <span class="testClass">测试元素+类名</span>
 
+    <p v-if="v_if">v_if为true时显示</p>
+    <button @click="v_if = !v_if">切换v_if的值</button>
 
-
-
-
-
-
-
-
+    <HelloWorld msg="Vite + Vue" />
   </div>
-  <!-- <HelloWorld msg="Vite + Vue" /> -->
 </template>
 
 <style scoped>
-.active{
-  font-size: 20px;
-  color: blue;  
+#list-1 {
+  color: red;
 }
-.HelloWorld{
+
+.list1 {
+  color: blue;
+}
+
+#testid.testClass {
+  font-size: 25px;
+}
+
+p.testClass {
+  color: red;
+}
+
+.active {
+  font-size: 20px;
+  color: blue;
+}
+
+.HelloWorld {
   background-color: aqua;
 }
+
 #d1 {
   color: red;
 }
 
 .d1 {
-  color: blue
+  color: blue;
 }
 
 .logo {

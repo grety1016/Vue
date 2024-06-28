@@ -29,6 +29,15 @@ export default {
       id: 1,
       list: 1,
       v_if: true,
+      person: ["张三", "李四", "王五"],
+      // 数组数据操作方法：push;pop;shift;unshift;splice;sort;reverse;
+      personObject: {
+        name: "张三",
+        age: 18,
+        sex: "男",
+      },
+      arrayList: [1, 2, 3, 4, 5, 6],
+      counter: 0,
     };
   },
   computed: {
@@ -80,6 +89,7 @@ export default {
     //   },
     //   deep:true,
     //  }
+
     // 深度监听对象的属性
     "user.name": {
       //"user.name"
@@ -97,11 +107,22 @@ export default {
       this.url = "https://pic.616pic.com/ys_img/00/03/69/xZYB7unkyE.jpg";
     },
     reversemessage: function () {
-      console.log("methods");
+      //console.log("methods");
       return this.message.split(" ").reverse().join(" ");
     },
     ChangeMessage: function () {
       this.message = "Hello Rust";
+    },
+    // addCounter() {
+    //   this.counter++;
+    // },
+    addCounter(e) {
+      this.counter++;
+      console.log(e);
+    },
+    plusCounter(number, e) {
+      this.counter += number;
+      console.log(e);
     },
   },
 };
@@ -165,12 +186,47 @@ export default {
 
     <p v-if="v_if">v_if为true时显示</p>
     <button @click="v_if = !v_if">切换v_if的值</button>
+    <!-- 无下标 -->
+    <u class="no-underline">
+      <li v-for="item in person" :key="item">{{ item }}</li>
+    </u>
+    <!-- 带下标 -->
+    <u class="no-underline">
+      <li v-for="(item, index) in person" :key="index">{{ item }}--{{ index }}</li>
+    </u>
+    <!-- 对象形式 -->
+    <u class="no-underline">
+      <li v-for="(value, key, index) in personObject" :key="index">
+        {{ value }}-----{{ key }}--{{ index }}
+      </li>
+    </u>
 
-    <HelloWorld msg="Vite + Vue" />
+    <!-- 数组的操作 -->
+    <u class="no-underline">
+      <li v-for="(item, index) in arrayList" :key="index">{{ item }}</li>
+    </u>
+
+    <button @click="addCounter">counter is:{{ counter }}</button>
+    <button @click="plusCounter(5, $event)">counter is:{{ counter }}</button>
+    <button @click="plusCounter(5, $event), addCounter($event)">
+      counter is:{{ counter }}
+    </button>
+
+    <!-- 事件修饰符
+    .stop .prevent .self .capture .once .passive 事件修饰符
+    -->
+    <div @click="console.log('from div')">
+      <button @click.stop="console.log('from button')">点击我</button>
+    </div>
+
+    <!-- <HelloWorld msg="Vite + Vue" /> -->
   </div>
 </template>
 
 <style scoped>
+.no-underline {
+  text-decoration: none;
+}
 #list-1 {
   color: red;
 }

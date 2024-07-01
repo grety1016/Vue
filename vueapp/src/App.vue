@@ -1,8 +1,8 @@
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Content from "./components/Content.vue";
 export default {
   components: {
-    HelloWorld,
+    Content,
   },
   data() {
     return {
@@ -38,6 +38,13 @@ export default {
       },
       arrayList: [1, 2, 3, 4, 5, 6],
       counter: 0,
+      subContents: {
+        name: "grety",
+        sex: "男",
+        grade: [86, 96, 78],
+        email: "snl1016@163.com",
+      },
+      fromSubMsg: "",
     };
   },
   computed: {
@@ -56,7 +63,7 @@ export default {
       },
     },
     classObject: function () {
-      immediate: true;
+      //immediate: true;
       return {
         active: this.isActive && !this.error,
       };
@@ -74,7 +81,7 @@ export default {
     //   }
     // watch深度监听
     message: {
-      immediate: true,
+      //: true,
       handler: function (newValue) {
         if (newValue.length > 5 && newValue.length < 11) {
           console.log(newValue);
@@ -124,6 +131,9 @@ export default {
       this.counter += number;
       console.log(e);
     },
+    getSubMsg(value) {
+      this.fromSubMsg = value.name;
+    },
   },
 };
 </script>
@@ -143,9 +153,9 @@ export default {
     <div :id="`list-${id}`">hello world</div>
     <div :class="`list${list}`">hello world</div>
     <!-- @click 等同于 v-on:click -->
-    <button v-on:click="chantgeUname">改变名字</button>
+    <button @click="chantgeUname">改变名字</button>
     <!-- v-bind可以用于绑定属性值 -->
-    <img v-bind:src="url" alt="" />
+    <img :src="url" alt="" />
     <button @click="changePicture">改变图片</button>
     <!-- 动态属性及动态属性值 -->
     <p :[attributeName]="attributeValue">动态属性</p>
@@ -218,8 +228,9 @@ export default {
     <div @click="console.log('from div')">
       <button @click.stop="console.log('from button')">点击我</button>
     </div>
-
-    <!-- <HelloWorld msg="Vite + Vue" /> -->
+    <!-- :subContents是父组件传递给子组件，@sendMsg是子组件通过事件形式传递给父组件 -->
+    <Content :subContents="subContents" @sendMsg="getSubMsg"></Content>
+    <p>{{ fromSubMsg }}</p>
   </div>
 </template>
 

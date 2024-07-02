@@ -132,7 +132,7 @@ export default {
       console.log(e);
     },
     getSubMsg(value) {
-      this.fromSubMsg = value.name;
+      this.fromSubMsg = value;
     },
   },
 };

@@ -9,8 +9,7 @@ export default {
       num: 0,
       uname: "张三",
       htmltag: "<h2>标题</h2>",
-      url:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNkbwU1t1XV0BJgu4EHIVClOVUx0H9Xh6LvQ&s",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNkbwU1t1XV0BJgu4EHIVClOVUx0H9Xh6LvQ&s",
       attributeName: "id",
       attributeValue: "d1",
       eventName: "click",
@@ -45,6 +44,13 @@ export default {
         email: "snl1016@163.com",
       },
       fromSubMsg: "",
+      checks: "",
+      fruits: [],
+      sex:"",
+      city:"",
+      citys:[],
+      parentReadSub:"",
+
     };
   },
   computed: {
@@ -106,7 +112,13 @@ export default {
       deep: true,
     },
   },
+  mounted() {
+    console.log("父组件访问子组件：");
+    console.log(this.$refs.Content.subMsg);
+    this.parentReadSub = this.$refs.Content.subMsg;
+  },
   methods: {
+    
     chantgeUname: function () {
       this.uname = "李四";
     },
@@ -178,7 +190,7 @@ export default {
     <input type="text" v-model="message" />
     <!-- 深度监听user.name -->
     <button @click="user.name = '王五'">改变名字</button>
-
+  
     <!-- class样式 -->
     <!-- 直接在标签中使用字符属性 -->
     <p class="active">Hello</p>
@@ -187,13 +199,13 @@ export default {
     <!-- //类属性是可以叠加配置的，会合并两个class类 -->
     <button @click="isActive = !isActive">改变isActive属性值</button>
     <p :class="activeArray">样式来源于数组</p>
-
+  
     <!-- style内联样式 -->
     <p :style="{ color: activeColor, fontSize: font_size }">内联样式</p>
-
+  
     <p class="testClass" id="testid">测试元素+类名</p>
     <span class="testClass">测试元素+类名</span>
-
+  
     <p v-if="v_if">v_if为true时显示</p>
     <button @click="v_if = !v_if">切换v_if的值</button>
     <!-- 无下标 -->
@@ -202,7 +214,9 @@ export default {
     </u>
     <!-- 带下标 -->
     <u class="no-underline">
-      <li v-for="(item, index) in person" :key="index">{{ item }}--{{ index }}</li>
+      <li v-for="(item, index) in person" :key="index">
+        {{ item }}--{{ index }}
+      </li>
     </u>
     <!-- 对象形式 -->
     <u class="no-underline">
@@ -210,27 +224,79 @@ export default {
         {{ value }}-----{{ key }}--{{ index }}
       </li>
     </u>
-
+  
     <!-- 数组的操作 -->
     <u class="no-underline">
       <li v-for="(item, index) in arrayList" :key="index">{{ item }}</li>
     </u>
-
+  
     <button @click="addCounter">counter is:{{ counter }}</button>
     <button @click="plusCounter(5, $event)">counter is:{{ counter }}</button>
     <button @click="plusCounter(5, $event), addCounter($event)">
       counter is:{{ counter }}
     </button>
+ 
+  
+    <!-- 多选框 -->
+    <p>多选框</p>
+    <br />
+    <input type="checkbox" v-model="checks" />
+    <p>{{ checks }}</p>
+    <!-- 多选水果并显示结果 -->
+    <br />
+    <label for="apple"><input id="apple" type="checkbox" v-model="fruits" value="苹果" />苹果</label>
+    <label for="blueberry"><input id="blueberry" type="checkbox" v-model="fruits" value="蓝莓" />蓝莓</label>
+    <label for="cherry"><input id="cherry" type="checkbox" v-model="fruits" value="樱桃" />樱桃</label>
+    <label for="durian"><input id="durian" type="checkbox" v-model="fruits" value="榴莲" />榴莲</label>
+    <p>我喜欢的水果：{{ fruits.join(",") }}</p>
 
+    <!-- 单选框 -->
+    <p>单选框</p>
+    <label for="sex_m"><input id="sex_m" type="radio" v-model="sex" value="男">男</label>
+    <label for="sex_w"><input id="sex_w" type="radio" v-model="sex" value="女">女</label>
+    <p>{{ sex }}</p>
+
+    <!-- 单选列表框 -->
+    <select name="" id="" v-model="city">
+      <option value="" disabled>请选择城市</option>
+      <option value="厦门">厦门</option>
+      <option value="泉州">泉州</option>
+      <option value="漳州">漳州</option>
+    </select>
+    <p>{{ city }}</p>
+    <!-- 多选列表框 -->
+    <select name="" id="" v-model="citys" multiple>
+      <option value="" disabled>请选择城市</option>
+      <option value="厦门">厦门</option>
+      <option value="泉州">泉州</option>
+      <option value="漳州">漳州</option>
+    </select>
+    <p>{{ citys.join(',') }}</p>
+
+  
     <!-- 事件修饰符
-    .stop .prevent .self .capture .once .passive 事件修饰符
-    -->
+      .stop .prevent .self .capture .once .passive 事件修饰符
+      -->
     <div @click="console.log('from div')">
       <button @click.stop="console.log('from button')">点击我</button>
     </div>
+
+     <p @click="console.log('正常点击');" @click.self="console.log('self修饰');">点击我</p>
+
+     <div @scroll="console.log('滚动')">滚动我</div>
+     
+
+
+
     <!-- :subContents是父组件传递给子组件，@sendMsg是子组件通过事件形式传递给父组件 -->
-    <Content :subContents="subContents" @sendMsg="getSubMsg"></Content>
-    <p>{{ fromSubMsg }}</p>
+    <Content :subContents="subContents" @sendMsg="getSubMsg" ref="Content"></Content>
+    <p>信息来自于子组件传递的subMsg{{ fromSubMsg }}</p>
+
+    <!-- 子父组件互相访问数据，父组件访问子组件采用$refs,子组件访问父组件采用$parent,子组件访问根组件采用$root-->
+    <p>父组件读取子组件的数据：{{parentReadSub}}</p>
+
+
+
   </div>
 </template>
 
@@ -238,6 +304,7 @@ export default {
 .no-underline {
   text-decoration: none;
 }
+
 #list-1 {
   color: red;
 }

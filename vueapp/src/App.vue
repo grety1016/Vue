@@ -1,8 +1,10 @@
 <script>
 import Content from "./components/Content.vue";
+import Slots from './components/Slots.vue';
 export default {
   components: {
     Content,
+    Slots,
   },
   data() {
     return {
@@ -294,6 +296,18 @@ export default {
 
     <!-- 子父组件互相访问数据，父组件访问子组件采用$refs,子组件访问父组件采用$parent,子组件访问根组件采用$root-->
     <p>父组件读取子组件的数据：{{parentReadSub}}</p>
+
+    <!-- Slots插槽的使用 -->
+    <Slots><button>按我</button></Slots>
+    <Slots>
+      <template v-slot:head><button>我是来自App.vue指定的button</button><br></template>
+      <template v-slot:body><input type="text"><br></template>
+      <template v-slot:foot><input type="text"><button>我是来自App.vue指定的button</button>加上文本文字内容<br></template>
+    </Slots>
+
+
+
+
 
 
 

@@ -40,10 +40,10 @@ export default {
 <template>
   <div>
     <div v-for="(item, index) in subContents" :key="index">
-      信息来自父组件传递的subContents：{{ item }}
-    </div> 
+      信息来自父组件传递的subContents:{{ item }}
+    </div>     
     <button @click="sendMsg">子组件按钮</button>
-    <SubContent :subContents="subContents"></SubContent>
+    <SubContent></SubContent>
   </div>
 </template>
 

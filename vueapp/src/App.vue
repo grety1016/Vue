@@ -1,10 +1,12 @@
 <script>
 import Content from "./components/Content.vue";
 import Slots from './components/Slots.vue';
+import Lifetime from "./components/Lifetime.vue";
 export default {
   components: {
     Content,
     Slots,
+    Lifetime,
   },
   data() {
     return {
@@ -52,8 +54,26 @@ export default {
       city:"",
       citys:[],
       parentReadSub:"",
+      transvalue: "采用属性传递值,父组件改变传递值,子组件不会跟着改变",
+      subobject:{
+        transvalue: "采用对象传递值,父组件改变传递值,子组件跟着改变",
+      },
+      isShow:true,
+
 
     };
+  },   
+  //如果想访问组件实例的属性，需要用函数返回
+  // provide:{ 
+  //   transvalue: "HELLO HE",
+  // },
+  provide(){
+    return{
+      transvalue: this.transvalue,//这种方式是非响应式的形式，即在父组件中改变数据，子组件中不会改变
+      subobject: this.subobject,//采用对象的形式实现响应式，即在父组件中改变数据，子组件也会改变
+      message:()=>this.message//采用函数返回响应式数据
+
+    }
   },
   computed: {
     // reversedmessage: function () {
@@ -170,7 +190,7 @@ export default {
     <button @click="chantgeUname">改变名字</button>
     <!-- v-bind可以用于绑定属性值 -->
     <img :src="url" alt="" />
-    <button @click="changePicture">改变图片</button>
+    <button @click="changePicture" >改变图片</button>
     <!-- 动态属性及动态属性值 -->
     <p :[attributeName]="attributeValue">动态属性</p>
     <!-- 动态事件属性及属性值 -->
@@ -292,19 +312,38 @@ export default {
 
     <!-- :subContents是父组件传递给子组件，@sendMsg是子组件通过事件形式传递给父组件 -->
     <Content :subContents="subContents" @sendMsg="getSubMsg" ref="Content"></Content>
+    <button @click="this.subContents.name = 'jone'">修改subContents.name的值</button>
+    <button @click="this.transvalue = '值不会变';console.log(transvalue)">修改transvalue的值</button>
+    <button @click="this.subobject.transvalue = '值改变';console.log(subobject.transvalue )">修改subobject的值</button>
+
+
     <p>信息来自于子组件传递的subMsg{{ fromSubMsg }}</p>
 
     <!-- 子父组件互相访问数据，父组件访问子组件采用$refs,子组件访问父组件采用$parent,子组件访问根组件采用$root-->
     <p>父组件读取子组件的数据：{{parentReadSub}}</p>
 
-    <!-- Slots插槽的使用 -->
+    <!-- Slots插槽的使用 --> 
     <Slots><button>按我</button></Slots>
     <Slots>
-      <template v-slot:head><button>我是来自App.vue指定的button</button><br></template>
-      <template v-slot:body><input type="text"><br></template>
-      <template v-slot:foot><input type="text"><button>我是来自App.vue指定的button</button>加上文本文字内容<br></template>
+      <!-- v-slot:head 可以简写成 #head -->
+      <template #head><button>我是来自App.vue指定的button</button><br></template>
+      <template #body><input type="text"><br></template>
+      <template #foot><input type="text"><button>我是来自App.vue指定的button</button>加上文本文字内容<br></template>
     </Slots>
 
+    <!-- 子组件中data定义的数据用于父组件渲染slot插槽时使用 -->
+    <!-- 有序列表渲染 -->
+    <Slots>
+      <template #default="slotProps"><li v-for="item in slotProps.lists" :key="item" style="list-style:decimal;;">{{item}}</li></template>
+    </Slots> 
+    <!-- 无序列表渲染 -->
+    <Slots>
+      <template #list_slot="slotProps"><li v-for="item in slotProps.lists" :key="item">{{item}}</li></template>
+    </Slots> 
+
+    <h2>---------------------lifetime----------------------------</h2>
+    <Lifetime v-if="isShow" />
+    <button @click="isShow=!isShow">改变是否显示</button>
 
 
 
@@ -314,7 +353,8 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style scoped> 
+
 .no-underline {
   text-decoration: none;
 }

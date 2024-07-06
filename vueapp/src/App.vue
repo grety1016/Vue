@@ -110,7 +110,7 @@ export default {
     // watch深度监听
     message: {
       //: true,
-      handler: function (newValue) {
+      handler(newValue) {
         if (newValue.length > 5 && newValue.length < 11) {
           console.log(newValue);
           this.message = newValue;

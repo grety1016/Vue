@@ -1,18 +1,24 @@
 <script>
     import { ref,reactive,toRefs,watch,watchEffect,computed,
-        onBeforeMount,onMounted,onBeforeUpdate,onUpdated
+        onBeforeMount,onMounted,onBeforeUpdate,onUpdated,provide,
     } from 'vue'
 import Content from '../../vueapi/src/components/Content.vue';
     export default {
         components: { Content },
         setup(){
+            const name = ref('grety');
+            const grety = ref({name:'grety', age:33,sex:'男'});
+            provide(name.value,grety.value);
+            function changeName(){
+                grety.value.name = 'suning'
+            }
+
             onBeforeMount(()=>{
                 console.log("onBeforeUpdate");
             });
 
             onMounted(()=>{
-                console.log("onMounted");
-                
+                console.log("onMounted");                
             });
 
             // 使用ref定义响应式变量
@@ -63,7 +69,7 @@ import Content from '../../vueapi/src/components/Content.vue';
                 submsg.value = "改变了值";
             }
 
-            function transvalue(value){
+            function printCounter(value){
                 console.log(`子组件传来的value：${value}`);
             }
           
@@ -72,8 +78,16 @@ import Content from '../../vueapi/src/components/Content.vue';
             //解构对象后，对象的属性或嵌套对象会失去响应式，如果想重新获取响应式可以使用toRefs()来重新获取：...toRefs(obj)既解构了对象又能获得响应式
             return {
                 msg,country,changeMsg,counter,incrementCounter,obj,chageObjName,...toRefs(obj),changeChildrenName,
-                reverseMsg,submsg,chageSubmsg,transvalue,          //...rest of your setup code...
+                reverseMsg,submsg,chageSubmsg,printCounter,changeName,        //...rest of your setup code...
             };       
+        },
+        methods: {
+            
+        },
+        mounted() {
+                console.log(this.$refs.Content);
+                console.log(this.$refs.Content.counter);
+                this.$refs.Content.sendCounter();
         },
         
 
@@ -97,8 +111,10 @@ import Content from '../../vueapi/src/components/Content.vue';
         <button @click="changeChildrenName">改变obj.children.name</button>
 
         <h2>-------------Content------------------</h2>
-        <Content :submsg = "submsg" class="box" id="boxid" @transvalue="transvalue"/>
+        <!-- <Content class="class1" id="id2" :submsg = "submsg"  @sendCounter="sendCounter"/> -->
+        <Content class="class1" id="id2" :submsg = "submsg" ref="Content" @sendCounter="printCounter"/>
         <button @click="chageSubmsg">改变Submsg值</button>
+        <button @click="changeName">改变grety的name</button>
 
     </div>
   

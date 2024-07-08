@@ -334,7 +334,7 @@ export default {
     <!-- 子组件中data定义的数据用于父组件渲染slot插槽时使用 -->
     <!-- 有序列表渲染 -->
     <Slots>
-      <template #default="slotProps"><li v-for="item in slotProps.lists" :key="item" style="list-style:decimal;;">{{item}}</li></template>
+      <template #default="slotProps"><li v-for="item in slotProps.lists" :key="item" style="list-style:decimal;">{{item}}</li></template>
     </Slots> 
     <!-- 无序列表渲染 -->
     <Slots>

@@ -5,8 +5,11 @@ import {
   createWebHistory, //创建web历史记录
 } from "vue-router";
 
-import Home from "../views/Home.vue";
-import About from "../views/About.vue";
+
+//路由懒加载，仅在需要使用时才加载路由
+
+// import About from "../views/About.vue";
+// 使用路由懒加载优化About组件的载入
 import Users from "../views/Users.vue";
 import NotFound from "../views/NotFound.vue";
 import Parent from "../views/Parent.vue";
@@ -17,28 +20,10 @@ import Shop from "../views/Shop.vue";
 import ShopTop from "../views/ShopTop.vue";
 import ShopContent from "../views/ShopContent.vue";
 import ShopFoot from "../views/ShopFoot.vue";
+import homerouters from "./homerouters.js";
 
 const routers = [
-  { 
-    path: "/",
-    // redirect: "/home", //重定向 
-    redirect:(to)=> {
-      //console.log(to);
-      return {path: "/home"}
-    }
-  },
-  { 
-    path: "/home", component: Home },
-  { 
-    path: "/about", 
-    component: About,
-    //路由守卫
-    beforeEnter: (to, from, next) => {  //beforeEnter: [removeQueryParams, removeHash],数组中为函数名，函数用于路由守卫的复用
-      console.log(to);
-      console.log(from);
-      next();
-    }
-  },
+  ...homerouters,
   //动态路由
   { 
     name:'users',

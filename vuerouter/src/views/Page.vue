@@ -24,7 +24,7 @@
 
      
 
-    function goToPage(){       
+    function goToPage()  {       
         //console.log(route);
         //console.log(router);
         // router.push({ name: 'users', params: { id:123 } });

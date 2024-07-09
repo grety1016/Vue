@@ -21,22 +21,41 @@ import ShopFoot from "../views/ShopFoot.vue";
 const routers = [
   { 
     path: "/",
-    redirect: "/home", //重定向 
+    // redirect: "/home", //重定向 
+    redirect:(to)=> {
+      //console.log(to);
+      return {path: "/home"}
+    }
   },
   { 
     path: "/home", component: Home },
-  { path: "/about", component: About },
+  { 
+    path: "/about", 
+    component: About,
+    //路由守卫
+    beforeEnter: (to, from, next) => {  //beforeEnter: [removeQueryParams, removeHash],数组中为函数名，函数用于路由守卫的复用
+      console.log(to);
+      console.log(from);
+      next();
+    }
+  },
   //动态路由
   { 
     name:'users',
     path: "/users/:id(\\d+)", // /Users/:id(\\d+)
-    component: Users 
+    component: Users,
+    props:true, 
+    //strict: true,//用于判断是否匹配路由末尾的斜杠
+    //sensitive:true, // 用于判断是否区分大小写，true为区分    
   }, //参数可叠加多个
   //{ path: "/Users/:id?", component: Users },//参数只能有一个，不能有多个参数叠加 /Users/*** 是允许的，但/Users/***/**是不允许的
   //嵌套路由，父组件下有不同的组件，根据不同的需求指定不同的子组件显示
   {
     path: "/parent",
+    // 路由别名使用
+    alias:["/father","/fuqin"],//别名即可用此名称进行访问Path路径对应的组件,并且别名可以支持多个
     component: Parent,
+    // 嵌套路由使用，一个路由下有多个子路由
     children:[
       {
         path: "subpageone",
@@ -54,6 +73,7 @@ const routers = [
     component: Page,
   },
   {
+    //命名视图的使用，当前组件配置命名后，对应的组件会渲染在对应的router-view,用name属性来匹配组件名称
     path: "/shop",
     components:{
       default:ShopContent,
@@ -70,6 +90,13 @@ const routers = [
 const router = createRouter({
   history: createWebHistory(),
   routes: routers,
+});
+
+//全局守卫
+router.beforeEach((to,from,next) => {
+  console.log(to);
+  console.log(from);
+  next();
 });
 
 export default router;

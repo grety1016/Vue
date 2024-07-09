@@ -1,3 +1,6 @@
+<script setup>
+    
+</script>
 <template>
     <div>
         <h2>ParentComponent-ParentPage</h2>

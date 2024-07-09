@@ -14,22 +14,27 @@
     // },
     //}
 
+    import { reactive,ref } from 'vue';
     import { useRoute,useRouter } from 'vue-router';
+
+    const id = ref('123');
 
     const route = useRoute();
     const router = useRouter(); 
+
+     
 
     function goToPage(){       
         //console.log(route);
         //console.log(router);
         // router.push({ name: 'users', params: { id:123 } });
-        router.push({ name: 'users', params: { id:123 },query: { id:456 } });
+        router.push({name:'users',params:{id:id.value},query:{id:id.value}});
         console.log(route);
     }
 
     function replacePage() {
-        //router.push({ name: 'users', params: { id:123 },query: { id:456 },replace:true });
-        router.replace({ name: 'users', params: { id:123},query: { id:456} });
+        router.push({ name: 'users', params: { id:id.value },query: { id:id.value },replace:true });
+        //router.replace({ name: 'users', params: { id:123},query: { id:456} });
 
     }
 

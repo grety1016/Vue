@@ -31,6 +31,8 @@ GretyStore.$subscribe((mutation, state) => {
   console.log('New State:', state);  
 });
 
+ 
+
 // function repeatFunction() {
 //   GretyStore.increment();
 //   setTimeout(repeatFunction, 1000);

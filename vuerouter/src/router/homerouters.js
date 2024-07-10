@@ -11,7 +11,8 @@ const homerouters = [
         }
       },
       { 
-        path: "/home", component: Home 
+        path: "/home", 
+        component: Home 
       },
       { 
         path: "/about", 

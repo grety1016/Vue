@@ -1,23 +1,57 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { storeToRefs } from 'pinia' //用于在解构时保持响应式
+// import {defineAsyncComponent} from 'vue' //用于动态加载组件时使用
+// const  HelloWorld = defineAsyncComponent (() =>
+// import('./components/HelloWorld.vue'));
+import { useGretyStore } from './stores/index.js'
+const GretyStore = useGretyStore();
+const {count,doubleCount} = storeToRefs(GretyStore);
+
+//1、GretyStore.$reset()用于将store重置到初始状态
+//2、GretyStore.$patch()用于批量修改store仓库内对象的内容
+//GretyStore.$patch({
+  //   count: 10,
+  //   doubleCount: 20,
+  //   arrary:[...array,5],
+  // });
+//3、GretyStore.$patch((state) =>{
+// state.count=10;
+// state.doubleCount=40;
+// state.arrary.push(5);
+// });
+
+console.log(GretyStore);
+
+GretyStore.$subscribe((mutation, state) => {
+  console.log('Mutation:', mutation);
+  console.log('newValue:', mutation.events.newValue);
+  console.log('oldValue:', mutation.events.oldValue);
+
+  console.log('New State:', state);  
+});
+
+// function repeatFunction() {
+//   GretyStore.increment();
+//   setTimeout(repeatFunction, 1000);
+// }
+
+// setTimeout(repeatFunction, 1000)
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div>
+    <router-link to="/home">Home</router-link>
+    <div>{{ GretyStore.count }}</div>
+    <div>{{ GretyStore.doubleCount }}</div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <div>{{ count }}</div>
+    <div>{{ doubleCount }}</div>
+    <button @click="GretyStore.increment">Counter++</button>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+    <router-view></router-view>
+  </div>
 
-  <RouterView />
 </template>
 
 <style scoped>

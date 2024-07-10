@@ -1,10 +1,11 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { storeToRefs } from 'pinia' //用于在解构时保持响应式
-// import {defineAsyncComponent} from 'vue' //用于动态加载组件时使用
+import {defineAsyncComponent} from 'vue' //用于动态加载组件时使用
 // const  HelloWorld = defineAsyncComponent (() =>
 // import('./components/HelloWorld.vue'));
 import { useGretyStore } from './stores/index.js'
+
 const GretyStore = useGretyStore();
 const {count,doubleCount} = storeToRefs(GretyStore);
 

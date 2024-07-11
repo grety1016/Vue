@@ -21,7 +21,7 @@ let num3:number = n;
 
 const num4:number = 10;
 
-//数组array
+//数字类型数组array
 let arr1:number[] =[1,2,3];
 
 //泛型数组
@@ -35,7 +35,7 @@ obj = [];
 obj = new String('123');
 obj = String;
 
-//Any类型
+//Any类型数组
 let anyValue:any[]=[100,2,4,"123",true];
 //console.log(anyValue[0].split());//此语句在类型检查时可以通过，但是运行时会报错，因为TypeError: anyValue[0].split is not a function，这是因为对象是any类型，这也是any方便使用的同时也存在的缺点
 
@@ -68,6 +68,7 @@ p.name = "Grety";
 p.age = 33;
 p.parent = "father";
 p.head = "fall";
+p.body = "toll";
 console.log(p);
 //p.sex = 'woman' //只读属性无法在初始化后再次赋值
 
@@ -176,6 +177,402 @@ allValues = null;
 type stringType = 'su' | 'huang';//只能赋值给定的字符面量值
 let names:stringType = 'huang';
 
+//元组
+let tuples:[number,string]=[123,"123"];
+tuples = [456,"789"];
+tuples.push(333);
+console.log(tuples);
+tuples.push("444");
+console.log(tuples);
+
+//enum枚举类型
+
+enum Color {Red=2, Green=5, Blue=7}
+let color:Color = Color.Green;
+console.log(color);
+
+enum Direction {Up=1,Down,Left,Right}
+
+//枚举有两种类型：常数项和计算所得项
+enum Color2 {
+    Red, Green, 
+    Blue = "blue".length
+    //Green, //在计算所得项的后面只能是赋值项，不能是未赋值项
+};
+
+//外部枚举
+declare enum Directions {
+    Up,
+    Down,
+    Left,
+    Right
+} 
+
+//类class
+class Person {
+    name:string;
+    age:number;
+
+    constructor(name:string, age:number) {//构造方法是用new()函数进行调用的
+        this.name = name;
+        this.age = age;
+    }
+}
+
+let p1 = new Person('NingLv', 20);
+console.log(p1);
+
+//继承类用 extends
+class Animal {
+    name:string;
+    age:number;
+
+    constructor(name:string, age:number) {
+        this.name = name;
+        this.age = age;
+    }
+
+    eat():void {
+        console.log(`${this.name} is eating.`);
+    }
+}
+
+class Dog extends Animal {
+    constructor(name:string,age:number){
+        super(name, age);
+    }
+    eat(): void {
+        console.log(`${this.name}  eat method.`);
+    }
+}
+
+const cat = new Animal('cat', 10);
+cat.eat();
+
+const dog = new Dog('dog', 5);
+dog.eat();
+
+//类的存取器 getter 和 setter 
+class Name{
+    firstName:string;
+    lastName:string;
+
+    constructor(firstName:string,lastName:string){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    //get、set 属性名（），当实例需要访问时直接 类实例名.属性名，不需要（）
+    get fullName() {
+        return `${this.firstName} ${this.lastName}`;
+    }
+    set fullName(value:string){
+        const names = value.split(' ');
+        this.firstName = names[0];
+        this.lastName = names[1];
+    }
+}
+
+let n1 = new Name('苏','宁绿');
+console.log(n1.fullName);
+n1.fullName = "黄 蓝雁";
+console.log(n1);
+
+//类的静态属性和方法
+
+class MathUtils {
+    static PI:number = 3.14;
+
+    static sum(a:number, b:number):number {
+        return a + b;
+    }
+}
+
+MathUtils.PI = 3.1415926;
+console.log(MathUtils.PI);
+
+console.log(MathUtils.sum(1,2));
+
+//public private 和 protected
+// public 修饰的属性或方法是公有的，可以在任何地方被访问到，默认所有的属性和方法都是 public 的
+// private 修饰的属性或方法是私有的，不能在声明它的类的外部访问
+// protected 修饰的属性或方法是受保护的，它和 private 类似，区别是它在子类中也是允许被访问的
+
+class Animal2 {
+    public name:string;
+    private age:number;
+    protected weight:number;
+
+    constructor(name:string, age:number, weight:number){
+        //当构造函数修饰为 private 时，该类不允许被继承或者实例化：
+        //当构造函数修饰为 protected 时，该类只允许被继承：不允许被实例化
+        //修饰符和readonly还可以使用在构造函数参数中，等同于类中定义该属性同时给该属性赋值(只能在constructor构造初始化时赋值，后续不能再修改其属性值)
+        this.name = name;
+        this.age = age;
+        this.weight = weight;
+    }
+
+    public eat():void {//可以在任意地方使用
+        console.log(`${this.name} is eating.`);
+    }
+
+    private sleep():void {
+        console.log(`${this.name} is sleep.`);
+    }
+
+    protected play():void {
+        console.log(`${this.name} is playing.`);
+    }
+}
+
+class Dog2 extends Animal2 {
+    //sleep():void {} //private只能在类自己内部访问，继承也不行
+    play():void {
+        console.log(`${this.name} is playing with Dog2.`);
+        super.play();//protected可以在继承类中使用
+    }
+
+}
+
+// readonly
+class X {
+    //readonly age:number//只读属性，但是在构造函数是可以修改的
+    // readonly定义在参数上，那就是创建并且初始化的age参数age:number)
+    constructor(readonly age:number){
+        //此处无需再赋值，因为在调用构造函数时已经被初始化
+    }
+    // this.age=age
+    update(){
+    // this.age=15 报错，不能被修改 ，只读属性
+    }
+    
+}
+
+const x=new X(13)
+console.log(x);
+
+//抽象类
+//抽象类专门服务于子类而生本身不支持实例化，具备方法签名，但不具备方法实体，只能在子类中实现
+
+abstract class Animal3 {
+    abstract name:string;
+
+    // constructor(name){
+    //     this.name = name;//抽象属性不能被访问
+    // }
+
+    abstract makeSound():void; // 抽象方法，没有方法体，需要子类实现
+    eat():void {
+        console.log(`${this.name} is eating.`);
+    }
+}
+
+class Cat3 extends Animal3 {
+    name:string;
+
+    constructor(name){
+        super();
+        this.name = name;
+    }
+    makeSound(): void {
+        console.log(`${this.name} is makeSound.`); 
+    }
+}
+
+const cat3 = new Cat3('cat3');
+cat3.makeSound();
 
 
+//类的类型：
+class Car{
+    name: string;
+    age:number;
+    constructor(name:string){
+        this.name = name
+    }
 
+    drive():void{
+        console.log(`${this.name} is driving.`);
+    }
+}
+class Ben extends Car{
+    age:number;
+    constructor(name){
+        super(name)
+    }   
+}
+//子、父类型可以相互作为变量的类型，因为他们的属性一样，但如果子类有独立于父类的属性时，是不可以这样操作的。 eg:类型 "Car" 中缺少属性 "age"，但类型 "Ben" 中需要该属性。
+const car:Ben= new Car("Ben");
+const ben: Car = new Ben("Car");
+console.log(car);
+console.log(ben);
+
+//类与接口的结合使用
+
+interface IAnimal {
+    name: string;
+    eat(): void;
+}
+
+class P implements IAnimal{
+    name:string;
+    constructor(name:string){
+        this.name = name;
+    }
+    eat(): void {
+        console.log(`${this.name} is eating.`);
+    }
+}
+
+class An implements IAnimal{
+    name:string;
+    constructor(name:string){
+        this.name = name;
+    }
+    eat(): void {
+        console.log(`${this.name} is eating.`);
+    }
+}
+
+const pp2 = new P('su');
+const an2 = new An('an');
+pp2.eat();
+an2.eat();
+
+//接口继承接口
+interface Alarm {
+    alert(): void;
+}
+
+interface Alarm2{
+    alert2():void;
+}
+interface LightableAlarm extends Alarm,Alarm2 {//继承多个接口，类暂时不能支持多重继承
+    lightOn(): void;
+    lightOff(): void;
+}
+
+class AlarmClass implements LightableAlarm{
+    price: number;
+    weight: number;
+    alert(): void {
+        console.log("Alarm is ringing...");
+    }
+    alert2(): void {
+        console.log("Alarm2 is ringing...");
+    }
+    lightOn(): void {
+        console.log("Light is on...");
+    }
+    lightOff(): void {
+        console.log("Light is off...");        
+    }
+    
+}
+
+//接口继承类
+class Point {
+    x: number;
+    y: number;
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+interface Point3d extends Point {
+    z: number;
+}
+
+let point3d: Point3d = {x: 1, y: 2, z: 3};
+
+//声明合并
+//函数合并
+function reverse(x: number): number;
+function reverse(x: string): string;
+function reverse(x: number | string): number | string {
+    if (typeof x === 'number') {
+        return Number(x.toString().split('').reverse().join(''));
+    } else if (typeof x === 'string') {
+        return x.split('').reverse().join('');
+    }
+}
+
+//接口合并
+interface Alarm {
+    price: number;
+}
+interface Alarm {
+    weight: number;
+}
+//相当于：//注意，合并的属性的类型必须是唯一的：
+interface Alarm {
+    price: number;
+    weight: number;
+}
+
+//类的合并与接口的合并规则一致。
+
+//泛型
+function getArr<T>(value:T,count:number):T[]{
+    const arr:T[]=[]
+    for(let i=0;i< count; i++){
+        arr.push(value)
+    }
+    return arr
+}
+
+console.log(getArr(123,3));
+console.log(getArr('123',3));
+
+//多个泛型参数
+//[123,'123']
+function updateArr<T,U>(t:[T,U]):[U,T]{
+    return[t[1],t[0]];
+}
+console.log('-----------------');
+console.log(updateArr<number,string>([123,'234']));
+console.log(updateArr<boolean,string>([false,'234']));
+
+
+//泛型的约束
+//约束的对象
+interface ILength{
+    length:number;
+}
+
+function getLength<T extends ILength>(value:T):number
+{
+    return value.length;
+}
+
+console.log(getLength([112,234,456]));
+
+//泛型接口
+interface IArr<T>{
+    <T>(value:T,count:number):Array<T>
+}
+
+let getArr2:IArr<string> = function getArr<T>(value:T,count:number):T[]{
+    const arr:T[]=[]
+    for(let i=0;i< count; i++){
+        arr.push(value)
+    }
+    return arr
+}
+
+console.log(getArr2('123',3));
+
+//泛型类
+class Genericity<T>{
+    name:T;
+    content:T;
+
+    constructor(name:T,content:T){
+        this.name = name;
+        this.content = content;
+    }
+    
+}
+
+const per3 = new Genericity<string>("ccc","content");
+console.log(per3);

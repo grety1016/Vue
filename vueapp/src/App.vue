@@ -325,7 +325,7 @@ export default {
     <!-- Slots插槽的使用 --> 
     <Slots><button>按我</button></Slots>
     <Slots>
-      <!-- v-slot:head 可以简写成 #head -->
+      <!-- v-slot:head 可以简写成 #head -->//匹配子组件插槽中的name属性
       <template #head><button>我是来自App.vue指定的button</button><br></template>
       <template #body><input type="text"><br></template>
       <template #foot><input type="text"><button>我是来自App.vue指定的button</button>加上文本文字内容<br></template>

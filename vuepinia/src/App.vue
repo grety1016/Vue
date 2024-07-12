@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { storeToRefs } from 'pinia' //用于在解构时保持响应式
 import {defineAsyncComponent} from 'vue' //用于动态加载组件时使用
 //const  HelloWorld = defineAsyncComponent (() => import('./components/HelloWorld.vue'));
-import { useGretyStore } from './stores/index.js'
+import { useGretyStore } from '@/stores/index'
 
 const GretyStore = useGretyStore();
 const {count,doubleCount} = storeToRefs(GretyStore);
@@ -27,10 +27,15 @@ GretyStore.$subscribe((mutation, state) => {
   console.log('Mutation:', mutation);
   console.log('newValue:', mutation.events.newValue);
   console.log('oldValue:', mutation.events.oldValue);
-
   console.log('New State:', state);  
 });
 
+function restGretyStore(){
+  GretyStore.$patch((state) =>{
+  state.count=10;
+  state.doubleCount=20;  
+});
+}
  
 
 // function repeatFunction() {
@@ -50,6 +55,8 @@ GretyStore.$subscribe((mutation, state) => {
     <div>{{ count }}</div>
     <div>{{ doubleCount }}</div>
     <button @click="GretyStore.increment">Counter++</button>
+    <button @click="restGretyStore">重置store</button>
+
 
     <router-view></router-view>
   </div>

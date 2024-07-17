@@ -19,7 +19,7 @@
 <script setup>
     import { onBeforeRouteUpdate, onBeforeRouteLeave,useRoute} from 'vue-router'
     //console.log(useRoute().params.id);
-    import { defineProps,defineEmits,inject } from 'vue';
+    import { inject } from 'vue';
     const message = inject('message','unTranslatedMessage');
     console.log(message);
 

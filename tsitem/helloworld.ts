@@ -94,7 +94,7 @@ let c = add(1,3);
 console.log(c);
 
 //函数表达式\匿名函数
-let add2 = function(a:number,b:number):number {return a+b;};
+const add2 = function(a:number,b:number):number {return a+b;};
 
 console.log(add2(2,3));
 
@@ -451,6 +451,7 @@ interface LightableAlarm extends Alarm,Alarm2 {//继承多个接口，类暂时�
     lightOff(): void;
 }
 
+//类型实现接口
 class AlarmClass implements LightableAlarm{
     price: number;
     weight: number;
@@ -545,7 +546,7 @@ function getLength<T extends ILength>(value:T):number
     return value.length;
 }
 
-console.log(getLength([112,234,456]));
+console.log(getLength([112,'234',456]));
 
 //泛型接口
 interface IArr<T>{

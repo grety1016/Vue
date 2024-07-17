@@ -3,12 +3,12 @@ import { RouterLink, RouterView } from 'vue-router'
 import { storeToRefs } from 'pinia' //用于在解构时保持响应式
 import {defineAsyncComponent} from 'vue' //用于动态加载组件时使用
 //const  HelloWorld = defineAsyncComponent (() => import('./components/HelloWorld.vue'));
-import { useGretyStore } from './stores/index.ts'
+import { useGretyStore } from '@/stores/index.ts'
 
 const GretyStore = useGretyStore();
 const {count,doubleCount} = storeToRefs(GretyStore);
 
-//1、GretyStore.$reset()用于将store重置到初始状态
+//1、GretyStore.$reset()用于将store重置到初始状态,setup语法糖不能直接调用$reset(),只能自己编写reset()方法来重置。
 //2、GretyStore.$patch()用于批量修改store仓库内对象的内容
 //GretyStore.$patch({
   //   count: 10,
@@ -49,7 +49,7 @@ function restGretyStore(){
 <template>
   <div>
     <router-link to="/home">Home</router-link>
-    <div>{{ GretyStore.count }}</div>
+    <div>{{ GretyStore.count }}</div> 
     <div>{{ GretyStore.doubleCount }}</div>
 
     <div>{{ count }}</div>
